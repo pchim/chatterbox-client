@@ -2,6 +2,7 @@
 var results;
 var time;
 var rooms = {allRooms: 'allRooms'};
+var friendsList = {};
 var app = {
   init: function () {
     $('.username').on('click', function() {
@@ -11,6 +12,7 @@ var app = {
     $('#send .submit').on('submit', function(event) {
       app.handleSubmit();
       event.preventDefault();
+      $('#message').val('');
     });
 
     $('select').change(function(event) {
@@ -66,9 +68,22 @@ var app = {
     var text = xssFilters.inHTMLData(message['text']);
     // var messageTime = Date.parse(message['createdAt']);
     // if (messageTime >= time) {
-    $username = $('<div class=\'allRooms ' + room + '\'>' 
-      + '<div class=\'username\'>' + username + ':' + text + ' ' + message['createdAt'] + '</div></div>' );
-    $('#chats').append($username);
+    $username = $('<div class=\'username\'>' + username + '</div>');
+    $wholeMessage = $('<div class=\'allRooms ' + room + '\'></div>'); 
+    $innerMessage = $('<div class=\'message\'>: ' + text + ' ' + message['createdAt'] + '</div>' );
+    $username.on('click', function() {
+      if (!friendsList.hasOwnProperty(username)) { 
+        friendsList[username] = true;
+      }
+    });
+
+    if (friendsList.hasOwnProperty(username)) {
+      $wholeMessage.addClass('friend');
+    }
+
+    $wholeMessage.append($username);
+    $wholeMessage.append($innerMessage);
+    $('#chats').append($wholeMessage);
     //}
     // time = Date.now();
     if (!rooms.hasOwnProperty(room)) {
