@@ -19,7 +19,6 @@ var app = {
       console.log('changed select', $('select').val());
       changeDom($('select').val());
     });
-
   },
   send: function (message) {
     $.ajax({
@@ -69,7 +68,7 @@ var app = {
     // var messageTime = Date.parse(message['createdAt']);
     // if (messageTime >= time) {
     $username = $('<div class=\'username\'>' + username + '</div>');
-    $wholeMessage = $('<div class=\'allRooms ' + room + '\'></div>'); 
+    $wholeMessage = $('<div class=\'allRooms ' + room + '\'></div>').addClass('chat'); 
     $innerMessage = $('<div class=\'message\'>: ' + text + ' ' + message['createdAt'] + '</div>' );
     $username.on('click', function() {
       if (!friendsList.hasOwnProperty(username)) { 
@@ -125,5 +124,5 @@ $(document).ready(function() {
 
   app.init();
   //console.log($('#postit'));
-  setInterval(function() { app.fetch(); }, 2000);
+  setInterval(function() { app.fetch(); }, 1000);
 });
