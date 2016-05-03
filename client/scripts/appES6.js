@@ -1,8 +1,9 @@
 // YOUR CODE HERE:
 var results;
 var time;
-var rooms = {allRooms: 'allRooms'};
+var rooms = {allRooms: 'allRooms', friendRoom: 'friendRoom'};
 var friendsList = {};
+var currentRoom = 'allRooms';
 var app = {
   init() {
     $('.username').on('click', () => app.addFriend() );
@@ -14,8 +15,28 @@ var app = {
     });
 
     $('select').change(event => {
-      //console.log('changed select', $('select').val());
-      changeDom($('select').val());
+      currentRoom = xssFilters.inHTMLData($('select').val());
+      var $tab = $('<li><a href=\'#\' class=\'tabLinks\' onclick=\"currentRoom = \'' + currentRoom + '\'\">' + currentRoom + '</a></li>');
+      var $exit = $('<a href =\'#\' class=\'exit\'>x</a>');
+      $('ul').find('.selected').removeClass('selected');
+      $('ul').append($tab);
+      $tab.addClass('selected');
+      $tab.append($exit);
+      changeDom(currentRoom);
+    });
+
+    $('ul').on('click', '.tabLinks', function() { 
+      $('ul').find('.selected').removeClass('selected');
+      $(this).closest('li').addClass('selected');
+    });
+
+    $('ul').on('click', '.exit', function() {
+      if ($(this).closest('li').hasClass('selected')) {
+        app.clearMessages();
+        currentRoom = 'allRooms';
+        $('.allRooms').closest('li').addClass('selected');
+      }
+      $(this).closest('li').remove();
     });
   }, 
   send(message) {
@@ -42,7 +63,7 @@ var app = {
       contentType: 'application/json',
       success(data) {
         results = data.results;
-        changeDom($('select').val());
+        changeDom(currentRoom);
       },
       error(data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -61,7 +82,8 @@ var app = {
     var text = xssFilters.inHTMLData(message['text']);
 
     $username = $('<div class=\'username\'>' + username + '</div>');
-    $wholeMessage = $('<div class=\'allRooms ' + room + '\'></div>').addClass('chat'); 
+    $wholeMessage = $('<div class=\'allRooms ' //room + 
+                      + '\'></div>').addClass('chat'); 
     $innerMessage = $('<div class=\'message\'>: ' + text + ' ' + message['createdAt'] + '</div>' );
     $username.on('click', () => {
       if (!friendsList.hasOwnProperty(username)) { 
@@ -78,7 +100,7 @@ var app = {
     $('#chats').append($wholeMessage);
     if (!rooms.hasOwnProperty(room)) {
       rooms[room] = room;
-      $('select').append('<option value=' + room + '>' + room + '</option>');
+      $('select').append('<option value=\'' + room + '\'>' + room + '</option>');
     }
     
   },
@@ -101,13 +123,18 @@ var app = {
 var changeDom = room => {
   app.clearMessages();
   _.each(results, item => {
-    if (room !== 'allRooms') {
-      if (room === xssFilters.inHTMLData(item['roomname'])) {
+    if (room === 'friendRoom') {
+      if (friendsList[xssFilters.inHTMLData(item['username'])]) {
         app.addMessage(item);
       }
+    } else if (room !== 'allRooms') {
+      if (room === xssFilters.inHTMLData(item['roomname'])) {
+        app.addMessage(item);
+      } 
     } else {
       app.addMessage(item);
     }
+    
   });
 };
 

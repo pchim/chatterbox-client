@@ -21,19 +21,21 @@
       <!-- Your HTML goes here! -->
       <div id="roomSelect"></div>
       <div id='send'>
-      <form class='submit'>
-        
+      <form class='submit'> 
         <textarea type='text' name='text' id='message' rows='4' cols='50'></textarea><br>
         <input type='submit'>
-
-        
       </form>
       <!--<form class='changeRoom'>-->
         <select name='room'>
         <option value='allRooms'>All Rooms</option>
         </select>
-       
       </div>
+    </div>
+    <div id='roomTabs'>
+    <ul class='roomTabs'>
+      <li class="selected"><a href='#' class='tabLinks allRooms' onclick="currentRoom = 'allRooms'">All Rooms</a></li>
+      <li><a href='#' class='tabLinks friendRoom' onclick="currentRoom = 'friendRoom'">Friends</a></li>
+    </ul>
     </div>
     <div id="chats"></div>
   </body>
