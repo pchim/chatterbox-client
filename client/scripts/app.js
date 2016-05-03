@@ -87,7 +87,7 @@ var app = {
     var message = {
       username: window.decodeURIComponent(window.location.search.substr(10)),
       text: $('#message').val(),
-      roomname: 'testRoom'
+      roomname: $('select').val()
     };
     app.send(message);
   }
