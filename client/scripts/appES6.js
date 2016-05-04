@@ -4,6 +4,7 @@ var time;
 var rooms = {allRooms: 'allRooms', friendRoom: 'friendRoom'};
 var friendsList = {};
 var currentRoom = 'allRooms';
+var stripe = 0;
 var app = {
   init() {
     $('.username').on('click', () => app.addFriend() );
@@ -85,6 +86,16 @@ var app = {
     $wholeMessage = $('<div class=\'allRooms ' //room + 
                       + '\'></div>').addClass('chat'); 
     $innerMessage = $('<div class=\'message\'>: ' + text + ' ' + message['createdAt'] + '</div>' );
+
+    if (stripe === 0) {
+      $wholeMessage.addClass('stripe1');
+      stripe = 1;
+    } else if (stripe === 1) {
+      $wholeMessage.addClass('stripe2');
+      stripe = 0;
+    }
+
+
     $username.on('click', () => {
       if (!friendsList.hasOwnProperty(username)) { 
         friendsList[username] = true;
@@ -136,9 +147,36 @@ var changeDom = room => {
     }
     
   });
+  makeTheme();
 };
+
+var makeTheme = function(themeName) {
+  var msgColor1 = '#686DB2';
+  var msgColor2 = '#E0D01E';
+  var topColor1 = '#C81C2D';
+  var topColor2 = '#ED1A31';
+  var msgColor3 = '#F1B090';
+  var msgBG = 'white';
+  var bgImage = 'images/ebImage1.jpg';
+
+  $('.stripe1').css('background-color', msgColor1);
+  $('.stripe2').css('background-color', msgColor2);
+  $('#main').css('background-color', topColor2);
+  $('#chats').css('background-color', msgBG);
+  $('body').css('background-image', 'url(\'' + bgImage + '\')');
+
+};
+
+
 
 $(document).ready(() => {
   app.init();
   setInterval(() => app.fetch(), 1000);
+  // app.fetch();
+
 });
+
+
+
+
+
