@@ -150,6 +150,7 @@ var changeDom = room => {
     }
     
   });
+  stripe = 0;
   makeTheme();
 };
 
