@@ -81,11 +81,14 @@ var app = {
     var username = xssFilters.inHTMLData(message['username']);
     var room = xssFilters.inHTMLData(message['roomname']);
     var text = xssFilters.inHTMLData(message['text']);
+    var time = new Date(message['createdAt']);
 
     $username = $('<div class=\'username\'>' + username + '</div>');
     $wholeMessage = $('<div class=\'allRooms ' //room + 
                       + '\'></div>').addClass('chat'); 
-    $innerMessage = $('<div class=\'message\'>: ' + text + ' ' + message['createdAt'] + '</div>' );
+    $innerMessage = $('<div class=\'message\'>: ' + text + ' ' + '</div>' );
+    $time = $('<div class=\'time\'>' + time + '</div>');
+    $innerMessage.append($time);
 
     if (stripe === 0) {
       $wholeMessage.addClass('stripe1');

@@ -106,7 +106,8 @@ form input[type=text] {
 }
 
 .friend {
-    color: #fff;
+    border: 3px solid red;
+    font-weight: bold;
     background-color: #0090da;
 }
 
@@ -166,4 +167,8 @@ li a.exit {
     font-size: small;
     float: right;
     padding-left: 5px;
+}
+
+.time {
+    font-size: 10px;
 }
