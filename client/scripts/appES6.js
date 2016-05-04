@@ -151,17 +151,28 @@ var changeDom = room => {
     
   });
   stripe = 0;
-  makeTheme();
+  makeTheme('earthbound');
 };
 
 var makeTheme = function(themeName) {
-  var msgColor1 = '#686DB2';
-  var msgColor2 = '#E0D01E';
-  var topColor1 = '#C81C2D';
-  var topColor2 = '#ED1A31';
-  var msgColor3 = '#F1B090';
+
+  var msgColor1 = '#EEE';
+  var msgColor2 = '#EEE';
+  var topColor1 = '#EEE';
+  var topColor2 = '#EEE';
+  var msgColor3 = '#EEE';
   var msgBG = 'white';
-  var bgImage = 'images/ebImage1.jpg';
+  var bgImage = '';
+
+  if (themeName === 'earthbound') {
+    msgColor1 = '#686DB2';
+    msgColor2 = '#E0D01E';
+    topColor1 = '#C81C2D';
+    topColor2 = '#ED1A31';
+    msgColor3 = '#F1B090';
+    msgBG = 'white';
+    bgImage = 'images/ebImage1.jpg';
+  }
 
   $('.stripe1').css('background-color', msgColor1);
   $('.stripe2').css('background-color', msgColor2);
